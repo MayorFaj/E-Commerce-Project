@@ -1,0 +1,85 @@
+stages:
+  - "unit-tests"
+  - "sonarqube"
+  - "docker-build-scan-push"
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375
+  ECR_URI: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/ad-service
+  AWS_DEFAULT_REGION: eu-central-1
+
+# default:
+#   tags:
+#     - "global"
+
+workflow:
+  rules:
+    # feature branch
+    - if: $CI_COMMIT_REF_NAME =~ /feature.*/ || $CI_COMMIT_REF_NAME =~ /bugfix.*/
+
+unit-tests:
+  stage: unit-tests
+  image: gradle:jdk21
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME =~ /feature.*/ || $CI_COMMIT_REF_NAME =~ /bugfix.*/
+  # tags:
+  #   - global
+  script:
+    - echo "Running unit tests"
+    - chmod +x ./gradlew
+    - ./gradlew test 
+
+# sonarqube:
+#   stage: sonarqube
+#   variables:
+#     GIT_DEPTH: 0
+#   image:
+#     name: sonarsource/sonar-scanner-cli:latest
+#     entrypoint: [""]
+#   only:
+#     variables:
+#       - $CI_COMMIT_REF_NAME =~ /feature.*/ || $CI_COMMIT_REF_NAME =~ /bugfix.*/
+#   tags:
+#     - global  
+#   script:
+#     - echo "Running SonarQube analysis"
+#     - sonar-scanner -Dsonar.token="${SONAR_TOKEN}"
+    
+docker-build-scan-push:
+  stage: docker-build-scan-push
+  image: docker:stable
+  services:
+    - docker:dind
+  only:
+     variables:
+      - $CI_COMMIT_REF_NAME =~ /feature.*/ || $CI_COMMIT_REF_NAME =~ /bugfix.*/
+    # - main
+    # - dev
+  # tags:
+  #   - global
+
+  before_script:
+    - set -x
+    - apk add --no-cache aws-cli
+    - apk --no-cache add curl && curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure set region $AWS_DEFAULT_REGION
+
+
+  script:
+    - echo $ECR_URI
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_URI
+
+    - echo "build Docker image"
+    - docker build -t $ECR_URI:$CI_COMMIT_SHORT_SHA .
+    - docker build -t $ECR_URI:dev .
+
+    - echo "Scanning Docker image"
+    - trivy image --severity CRITICAL --exit-code 1 $ECR_URI:dev
+
+    - echo "Pushing Docker image"
+    - docker push $ECR_URI:dev
+    - docker push $ECR_URI:$CI_COMMIT_SHORT_SHA

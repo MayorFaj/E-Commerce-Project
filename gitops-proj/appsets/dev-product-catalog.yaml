@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  name: product-catalog
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: devadminapp=249269726433.dkr.ecr.eu-west-2.amazonaws.com/revamp_admin_frontend_service:dev
+    argocd-image-updater.argoproj.io/devadminapp.update-strategy: digest
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-cred
+    argocd-image-updater.argoproj.io/write-back-target: "kustomization:/microservices/product-catalog/overlays/dev"
+    argocd-image-updater.argoproj.io/devadminapp.force-update: "true"
+spec:
+  destination:
+    server: https://D7A30105F6FE978E1C4343BC415F35AA.gr7.eu-central-1.eks.amazonaws.com
+    namespace: webservice
+  project: default
+  source:
+    plugin:
+      name: kustomized-helm
+    path: microservices/product-catalog/overlays/dev
+    repoURL: ""
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=true
+      - ServerSideApply=true

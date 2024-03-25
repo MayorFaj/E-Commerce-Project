@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: sonarqube
+
+helmCharts:
+  - repo: https://SonarSource.github.io/helm-chart-sonarqube
+    name: sonarqube
+    releaseName: sonarqube
+    valuesFile: values.yaml
+    version: 10.4.0+2288

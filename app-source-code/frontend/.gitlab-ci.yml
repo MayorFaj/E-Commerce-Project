@@ -1,0 +1,76 @@
+stages:
+  - "unit-tests"
+  - "sonarqube"
+  - "docker-build-scan-push"
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375
+  ECR_URI: 249269726433.dkr.ecr.eu-west-2.amazonaws.com/frontend-service
+
+default:
+  tags:
+    - "global"
+
+workflow:
+  rules:
+    # feature branch
+    - if: $CI_COMMIT_REF_NAME =~ /feature.*/ || $CI_COMMIT_REF_NAME =~ /bugfix.*/
+
+unit-tests:
+  stage: unit-tests
+  image: node:16-alpine
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME =~ /feature.*/ || $CI_COMMIT_REF_NAME =~ /bugfix.*/
+  tags:
+    - global
+  script:
+    - echo "Running unit tests"
+    - ./gradlew test
+
+# sonarqube:
+#   stage: sonarqube
+#   variables:
+#     GIT_DEPTH: 0
+#   image:
+#     name: sonarsource/sonar-scanner-cli:latest
+#     entrypoint: [""]
+#   only:
+#     variables:
+#       - $CI_COMMIT_REF_NAME =~ /feature.*/ || $CI_COMMIT_REF_NAME =~ /bugfix.*/
+#   tags:
+#     - global  
+#   script:
+#     - echo "Running SonarQube analysis"
+#     - sonar-scanner -Dsonar.token="${SONAR_TOKEN}"
+    
+docker-build-scan-push:
+  stage: docker-build-scan-push
+  image: docker:stable
+  services:
+    - docker:dind
+  only:
+    - main
+    - staging
+  tags:
+    - global
+
+  before_script:
+    - apk add --no-cache python3 py3-pip && pip3 install --upgrade pip
+    - pip3 install --no-cache-dir awscli && rm -rf /var/cache/apk/*
+    - apk --no-cache add curl && curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+  script:
+    - echo $ECR_URI
+    - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $ECR_URI
+
+    - echo "build Docker image"
+    - docker build -t $ECR_URI:$CI_COMMIT_SHORT_SHA .
+    - docker build -t $ECR_URI:stg .
+
+    - echo "Scanning Docker image"
+    - trivy image --severity CRITICAL --exit-code 1 $ECR_URI:stg
+
+    - echo "Pushing Docker image"
+    - docker push $ECR_URI:stg
+    - docker push $ECR_URI:$CI_COMMIT_SHORT_SHA

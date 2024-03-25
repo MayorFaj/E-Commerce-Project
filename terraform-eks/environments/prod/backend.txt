@@ -1,0 +1,4 @@
+bucket = "rias-touch-terraform-state-file"
+key    = "terraform-eks/prod-terraform.tfstate"
+region = "eu-central-1"
+encrypt = true
