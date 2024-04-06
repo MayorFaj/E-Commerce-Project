@@ -1,0 +1,24 @@
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: EC2NodeClass
+metadata:
+  name: general
+spec:
+  amiFamily: AL2
+  #instanceProfile: "KarpenterNodeInstanceProfile-${cluster_name}"
+  role: "KarpenterNodeRole-${cluster_name}"
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: ${cluster_name}
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: ${cluster_name}
+  blockDeviceMappings:
+    - deviceName: /dev/xvda
+      ebs:
+        volumeSize: 50Gi
+        volumeType: gp3
+        encrypted: true
+        deleteOnTermination: true
+  detailedMonitoring: true
+  tags:
+    environment: dev

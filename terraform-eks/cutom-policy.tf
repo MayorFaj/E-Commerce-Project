@@ -51,7 +51,7 @@ resource "aws_iam_policy" "eks_nodegroup_exteral_dns_policy" {
 }
 
 resource "aws_iam_policy" "additional" {
-  name = "${local.name}-additional"
+  name = "AdditionalPolicy"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -67,3 +67,4 @@ resource "aws_iam_policy" "additional" {
     ]
   })
 }
+

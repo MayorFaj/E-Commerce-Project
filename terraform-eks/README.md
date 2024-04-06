@@ -37,7 +37,7 @@ source_profile = developer
 aws eks --region <REGION> update-kubeconfig --name <CLUSTER_NAME>
 
 aws eks update-kubeconfig \
-  --name rias-touch-ecommerce-cluster \
+  --name rias-touch-cluster \
   --region eu-central-1 \
   --profile eks-admin
 
@@ -55,3 +55,20 @@ kubectl config delete-context arn:aws:eks:eu-central-1:953523290929:cluster/rias
 
 
 
+kubectl scale deployment inflate --replicas 5
+
+kubectl logs -f -n "${KARPENTER_NAMESPACE}" -l app.kubernetes.io/name=karpenter -c controller
+
+ Error: waiting for EKS Add-On (rias-touch-ecommerce-cluster:coredns) create: timeout while waiting for state to become 'ACTIVE' (last state: 'DEGRADED', timeout: 20m0s)
+│ 
+│   with module.eks.aws_eks_addon.this["coredns"],
+│   on .terraform/modules/eks/main.tf line 390, in resource "aws_eks_addon" "this":
+│  390: resource "aws_eks_addon" "this" {
+│ 
+╵
+╷
+│ Error: waiting for EKS Add-On (rias-touch-ecommerce-cluster:aws-ebs-csi-driver) create: timeout while waiting for state to become 'ACTIVE' (last state: 'DEGRADED', timeout: 20m0s)
+│ 
+│   with module.eks.aws_eks_addon.this["aws-ebs-csi-driver"],
+│   on .terraform/modules/eks/main.tf line 390, in resource "aws_eks_addon" "this":
+│  390: resource "aws_eks_addon" "this" {

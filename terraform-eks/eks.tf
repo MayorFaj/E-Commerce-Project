@@ -2,6 +2,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~>19.0"
 
+  
   cluster_name    = "${local.name}-cluster"
   cluster_version = local.cluster_version
 
@@ -18,23 +19,18 @@ module "eks" {
     provider_key_arn = module.ebs_kms_key.key_arn
   }
 
-  #cluster_ip_family = "ipv6"
-
-  #create_cni_ipv6_iam_policy = true
-
   manage_aws_auth_configmap = true
 
   aws_auth_roles = local.aws_auth_roles
 
   aws_auth_accounts = local.aws_auth_accounts
 
-  #enable_irsa = true
-
   iam_role_additional_policies = {
     additional                      = aws_iam_policy.additional.arn
     EKSNodegroupClusterIssuerPolicy = aws_iam_policy.eks_nodegroup_cluster_issuer_policy.arn
     EKSNodegroupExternalDNSPolicy   = aws_iam_policy.eks_nodegroup_exteral_dns_policy.arn
     EKSNodegroupECRFullAccess       = aws_iam_policy.eks_nodegroup_ecr_full_access.arn
+
   }
 
   cluster_addons = {
@@ -54,16 +50,6 @@ module "eks" {
     vpc-cni = {
       most_recent = true
     }
-    #before_compute           = true
-    #service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
-    # configuration_values = jsonencode({
-    #   env = {
-    #     # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
-    #     ENABLE_PREFIX_DELEGATION = "true"
-    #     WARM_PREFIX_TARGET       = "1"
-    #   }
-    # })
-    #}
   }
 
   cluster_security_group_additional_rules = {
@@ -92,8 +78,6 @@ module "eks" {
       source_security_group_id = aws_security_group.remote_access.id
     }
   }
-
-
 
   node_security_group_additional_rules = {
     ingress_self_all = {
@@ -135,6 +119,7 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
+    
     general = {
       desired_size         = 2
       min_size             = 1
@@ -149,22 +134,20 @@ module "eks" {
       }
 
       labels = {
-        role       = "spot"
+        role      = "spot"
         GithubRepo = "terraform-aws-eks"
         GithubOrg  = "terraform-aws-modules"
       }
 
-      instance_types = ["t3.large"]
+      instance_types = ["t3.medium", "t2.medium"]
       capacity_type  = "SPOT"
 
       block_device_mappings = {
         xvda = {
           device_name = "/dev/xvda"
           ebs = {
-            volume_size = 50
-            volume_type = "gp3"
-            #iops                  = 3000
-            #throughput            = 150
+            volume_size           = 50
+            volume_type           = "gp3"
             encrypted             = true
             kms_key_id            = module.ebs_kms_key.key_arn
             delete_on_termination = true
@@ -174,30 +157,40 @@ module "eks" {
 
     }
 
-    spot = {
-      desired_size = 1
-      min_size     = 1
-      max_size     = 5
+    # karpenter = {
+    #   desired_size = 1
+    #   min_size     = 2
+    #   max_size     = 5
 
-      labels = {
-        role       = "spot"
-        GithubRepo = "terraform-aws-eks"
-        GithubOrg  = "terraform-aws-modules"
-      }
+    #   iam_role_additional_policies = {
+    #     additional                      = aws_iam_policy.additional.arn
+    #     EKSNodegroupClusterIssuerPolicy = aws_iam_policy.eks_nodegroup_cluster_issuer_policy.arn
+    #     EKSNodegroupExternalDNSPolicy   = aws_iam_policy.eks_nodegroup_exteral_dns_policy.arn
+    #     EKSNodegroupECRFullAccess       = aws_iam_policy.eks_nodegroup_ecr_full_access.arn
+    #   }
 
-      taints = [{
-        key    = "dedicated"
-        value  = "spot"
-        effect = "NO_SCHEDULE"
-      }]
+    #   labels = {
+    #     Environment       = "prod"
+    #     GithubRepo = "terraform-aws-eks"
+    #     GithubOrg  = "terraform-aws-modules"
 
-      instance_types = ["t3.micro"]
-      capacity_type  = "SPOT"
-    }
+    #   }
+
+    #   taints = [{
+    #     key    = "system"
+    #     value  = "owned"
+    #     operator = "Equal"
+    #     effect = "NO_SCHEDULE"
+    #   }]
+
+    #   instance_types = ["t3.medium,t2.medium"]
+    #   capacity_type  = "SPOT"
+    # }
 
   }
   node_security_group_tags = {
-    "kubernetes.io/cluster/${local.name}-cluster" = null
+    "kubernetes.io/cluster/${local.name}-cluster"  = null
+    "karpenter.sh/discovery" = "${local.name}-cluster"
   }
 
   tags = local.tags

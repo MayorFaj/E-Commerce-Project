@@ -1,0 +1,60 @@
+stages:
+  - "validate-plan"
+  - "apply"
+  - "destroy"
+
+variables:
+  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+  AWS_DEFAULT_REGION: "eu-central-1"
+  TF_VERSION:  "1.4.0"
+  env: "dev"
+
+image: ubuntu:latest
+
+before_script:
+  - apt-get update && apt-get install -y curl unzip jq python3-pip
+  - pip3 install awscli
+  - curl https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
+  - unzip terraform.zip && mv terraform /usr/local/bin/
+  - rm terraform.zip
+  - cd modules/ecr
+
+workflow:
+  rules:
+    # feature branch
+    - if: $CI_COMMIT_REF_NAME =~ /feature.*/
+
+    
+validate-plan:
+  stage: validate-plan
+  only:
+     variables:
+      - $CI_COMMIT_REF_NAME =~ /feature.*/
+
+  script:
+    - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    - export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+    - terraform init tfplan -backend-config=./environments/dev/backend.txt -reconfigure
+    - terraform validate
+    - terraform plan -var-file=./environments/${env}/values.tfvars
+
+apply:
+  stage: apply
+  script:
+    - terraform apply -var-file=./environments/${env}/values.tfvars  --auto-approve
+  dependencies:
+    - validate-plan
+  when: manual
+  only:
+    - main
+
+destroy: 
+  stage: destroy
+  script:
+    - terraform destroy -var-file=./environments/${env}/values.tfvars --auto-approve
+  dependencies:
+    - validate-plan
+  when: manual
+  only:
+    - main

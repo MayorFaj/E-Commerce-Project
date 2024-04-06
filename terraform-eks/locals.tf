@@ -1,5 +1,5 @@
 locals {
-  name            = "rias-touch-ecommerce"
+  name            = "rias-touch"
   cluster_version = "1.29"
   region          = "eu-central-1"
 
@@ -8,7 +8,6 @@ locals {
 
   private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
-  intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
 
   developer_usernames = "developer"
 
@@ -16,28 +15,16 @@ locals {
     {
       rolearn  = module.eks_admins_iam_role.iam_role_arn
       username = module.eks_admins_iam_role.iam_role_name
-      groups   = ["system:masters"]
+      groups   = ["system:masters"] 
     },
+    # {
+    #   rolearn  = module.iam_assumable_role_karpenter.iam_role_arn
+    #   username = "system:node:{{EC2PrivateDNSName}}"
+    #   groups   = ["system:nodes","system:bootstrappers"]
+    # }
   ]
 
   aws_auth_users = "developer"
-
-  #   aws_auth_root_account = [
-  #     {
-  #       userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
-  #       username = "MayorFaj"
-  #       groups   = ["system:masters"]
-  #     }
-  #   ]
-
-  #   aws_auth_admins = [
-  #     for admin in var.admin_usernames :
-  #     {
-  #       userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${admin}"
-  #       username = "${admin}"
-  #       groups   = ["system:masters"]
-  #     }
-  #   ]
 
   aws_auth_accounts = [
     tostring(data.aws_caller_identity.current.account_id)
@@ -48,7 +35,7 @@ locals {
 
   tags = {
     Environment                                   = "dev"
-    "kubernetes.io/cluster/${local.name}-cluster" = "shared"
+    "kubernetes.io/cluster/${local.name}-cluster" = "owned"
     GithubRepo                                    = "terraform-aws-eks"
     GithubOrg                                     = "terraform-aws-modules"
   }
