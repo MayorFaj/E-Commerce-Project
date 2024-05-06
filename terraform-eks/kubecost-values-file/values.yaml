@@ -1,0 +1,82 @@
+# grafana is disabled by default, but can be enabled by setting the following values.
+# or proxy to an existing grafana: https://docs.kubecost.com/install-and-configure/advanced-configuration/custom-grafana
+global:
+  grafana:
+    enabled: false
+    proxy: false
+# grafana:
+#   image:
+#     repository: YOUR_REGISTRY/grafana
+#   sidecar:
+#     image:
+#       repository: YOUR_REGISTRY/k8s-sidecar
+
+kubecostFrontend:
+  image: public.ecr.aws/kubecost/frontend
+
+kubecostModel:
+  image: public.ecr.aws/kubecost/cost-model
+
+forecasting:
+  fullImageName: public.ecr.aws/kubecost/kubecost-modeling:v0.1.6
+
+networkCosts:
+  image:
+    repository: public.ecr.aws/kubecost/kubecost-network-costs
+
+clusterController:
+  image:
+    repository: public.ecr.aws/kubecost/cluster-controller
+
+prometheus:
+  server:
+    image:
+      repository: public.ecr.aws/kubecost/prometheus
+
+  configmapReload:
+    prometheus:
+      image:
+        repository: public.ecr.aws/kubecost/prometheus-config-reloader
+
+reporting:
+  productAnalytics: false
+
+nodeSelector:
+  kubernetes.io/os: linux  
+
+tolerations: []
+#  - key: "key"
+#    operator: "Equal|Exists"
+#    value: "value"
+#    effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
+
+affinity:
+  nodeAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+    nodeSelectorTerms:
+      - matchExpressions:
+          - key: karpenter.sh/nodepool
+            operator: DoesNotExist
+      - matchExpressions:
+        - key: eks.amazonaws.com/nodegroup
+          operator: In
+          values:
+          - general
+
+# ingress:
+#   enabled: false
+#   # className: nginx
+#   labels:
+#     # kubernetes.io/ingress.class: nginx
+#     # kubernetes.io/tls-acme: "true"
+#   annotations:
+#     # kubernetes.io/ingress.class: nginx
+#     # kubernetes.io/tls-acme: "true"
+#   paths: ["/"]  # There's no need to route specifically to the pods-- we have an nginx deployed that handles routing
+#   pathType: ImplementationSpecific
+#   hosts:
+#     - cost-analyzer.local
+#   tls: []
+#   #  - secretName: cost-analyzer-tls
+#   #    hosts:
+#   #      - cost-analyzer.local

@@ -1,8 +1,6 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~>19.0"
-
-  
   cluster_name    = "${local.name}-cluster"
   cluster_version = local.cluster_version
 
@@ -51,6 +49,8 @@ module "eks" {
       most_recent = true
     }
   }
+
+
 
   cluster_security_group_additional_rules = {
     ingress_nodes_ephemeral_ports_tcp = {

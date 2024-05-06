@@ -55,6 +55,7 @@ kubectl config delete-context arn:aws:eks:eu-central-1:953523290929:cluster/rias
 
 
 
+
 kubectl scale deployment inflate --replicas 5
 
 kubectl logs -f -n "${KARPENTER_NAMESPACE}" -l app.kubernetes.io/name=karpenter -c controller

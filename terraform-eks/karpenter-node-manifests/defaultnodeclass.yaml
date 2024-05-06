@@ -21,4 +21,4 @@ spec:
         deleteOnTermination: true
   detailedMonitoring: true
   tags:
-    environment: dev
+    team: teamA

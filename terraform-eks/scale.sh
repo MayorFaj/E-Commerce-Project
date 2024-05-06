@@ -1,11 +1,10 @@
-
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: inflate
 spec:
-  replicas: 0
+  replicas: 8
   selector:
     matchLabels:
       app: inflate
@@ -22,15 +21,14 @@ spec:
           image: public.ecr.aws/eks-distro/kubernetes/pause:3.2
           resources:
             requests:
-              memory: 1Gi
-
+              memory: 500Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: inflate2
 spec:
-  replicas: 0
+  replicas: 5
   selector:
     matchLabels:
       app: inflate

@@ -19,7 +19,7 @@ module "iam_assumable_role_karpenter" {
   role_name                     = "KarpenterNodeRole-${local.name}-cluster"
   provider_url                  = module.eks.cluster_oidc_issuer_url
   oidc_fully_qualified_audiences = ["sts.amazonaws.com"]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:karpenter:karpenter"]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:kubernetes_namespace.karpenter.id:karpenter"]
   allow_self_assume_role        = true
 
   depends_on = [
@@ -99,11 +99,6 @@ resource "helm_release" "karpenter" {
     name  = "settings.clusterEndpoint"
     value = module.eks.cluster_endpoint
   }
-
-  # set {
-  #   name  = "settings.assumeRoleARN"
-  #   value = module.iam_assumable_role_karpenter.iam_role_arn
-  # }
 
   depends_on = [
     module.eks,
