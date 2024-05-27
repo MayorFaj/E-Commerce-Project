@@ -72,21 +72,22 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
-          pushd app-source-code/${{ matrix.repo }}
-          echo "Building Docker Image"
-          docker build -t $ECR_REGISTRY/${{ matrix.repo }}:$COMMIT_SHA .
-          docker build -t $ECR_REGISTRY/${{ matrix.repo }}:stg .
-          popd
-
       # run: |
-      #   echo "Building Docker Image fro repositories: $ECR_REPOSITORIES"
-      #   IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORIES"
-      #   for repo in "${REPOSITORIES[@]}"; do
-      #     echo "Building Docker Image for $repo"
-      #     docker build -t $ECR_REGISTRY/$repo:$COMMIT_SHA .
-      #     docker build -t $ECR_REGISTRY/$repo:stg .
-      #   done
+      #     pushd app-source-code/${{ matrix.repo }}
+      #     echo "Building Docker Image"
+      #     docker build -t $ECR_REGISTRY/${{ matrix.repo }}:$COMMIT_SHA .
+      #     docker build -t $ECR_REGISTRY/${{ matrix.repo }}:stg .
+      #     popd
+
+      run: |
+        echo "Building Docker Image fro repositories: $ECR_REPOSITORIES"
+        IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORIES"
+        for repo in "${REPOSITORIES[@]}"; do
+          echo "Building Docker Image for $repo"
+           pushd app-source-code/$repop
+          docker build -t $ECR_REGISTRY/$repo:$COMMIT_SHA .
+          docker build -t $ECR_REGISTRY/$repo:stg .
+        done
     - 
       name: Run Trivy vulnerability scanner
       env:
@@ -103,16 +104,16 @@ jobs:
       name: Push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
-        echo "Building Docker Image"
-        docker push $ECR_REGISTRY/${{ matrix.repo }}:$COMMIT_SHA .
-        docker push $ECR_REGISTRY/${{ matrix.repo }}:stg .
-
       # run: |
-      #   echo "Pushing Docker Image for repositories: $ECR_REPOSITORIES"
-      #   IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORIES"
-      #   for repo in "${REPOSITORIES[@]}"; do
-      #     echo "Pushing Docker Image for $repo"
-      #     docker push $ECR_REGISTRY/$repo:$COMMIT_SHA
-      #     docker push $ECR_REGISTRY/$repo:stg
-      #   done
+      #   echo "Pushing Docker Image"
+      #   docker push $ECR_REGISTRY/${{ matrix.repo }}:$COMMIT_SHA .
+      #   docker push $ECR_REGISTRY/${{ matrix.repo }}:stg .
+
+      run: |
+        echo "Pushing Docker Image for repositories: $ECR_REPOSITORIES"
+        IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORIES"
+        for repo in "${REPOSITORIES[@]}"; do
+          echo "Pushing Docker Image for $repo"
+          docker push $ECR_REGISTRY/$repo:$COMMIT_SHA
+          docker push $ECR_REGISTRY/$repo:stg
+        done
