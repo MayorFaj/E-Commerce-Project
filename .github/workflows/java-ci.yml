@@ -33,7 +33,7 @@ jobs:
           echo "Building $repo..."
           pushd app-source-code/$repo
           chmod +x ./gradlew
-          ./gradlew build --warning-mode all
+          ./gradlew build --debug
           popd
         done
 

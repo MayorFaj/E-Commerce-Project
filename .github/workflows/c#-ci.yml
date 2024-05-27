@@ -44,7 +44,7 @@ jobs:
         repo: [cartservice]
     permissions:
       contents: read
-    #needs: build
+    needs: build
     steps:
     - 
       name: Checkout
