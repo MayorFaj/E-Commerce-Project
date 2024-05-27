@@ -1,6 +1,6 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Python application
+name: Python Application
 env:
   AWS_REGION: eu-central-1
   COMMIT_SHA: ${{ github.sha }}           
