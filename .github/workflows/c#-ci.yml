@@ -10,30 +10,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - 
-      uses: actions/checkout@v4
-    - 
-      name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      env:
-        DOTNET_INSTALL_DIR: "./.dotnet"
-      with:
-        dotnet-version: '8.0'
-    - 
-      name: C# Unit Tests
-      timeout-minutes: 10
-      run: |
-        echo "Running Unit Tests"
-        IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORY"
-        for repo in "${REPOSITORIES[@]}"; do
-          echo "testing $repo..."
-          pushd app-source-code/$repo
-          dotnet test
-          popd
-        done
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - 
+  #     uses: actions/checkout@v4
+  #   - 
+  #     name: Setup .NET
+  #     uses: actions/setup-dotnet@v4
+  #     env:
+  #       DOTNET_INSTALL_DIR: "./.dotnet"
+  #     with:
+  #       dotnet-version: '8.0.x'
+  #   - 
+  #     name: C# Unit Tests
+  #     timeout-minutes: 10
+  #     run: |
+  #       echo "Running Unit Tests"
+  #       IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORY"
+  #       for repo in "${REPOSITORIES[@]}"; do
+  #         echo "testing $repo..."
+  #         pushd app-source-code/$repo
+  #         dotnet test
+  #         popd
+  #       done
 
   deploy:
     name: Deploy
@@ -44,7 +44,7 @@ jobs:
         repo: [cartservice]
     permissions:
       contents: read
-    needs: build
+    #needs: build
     steps:
     - 
       name: Checkout

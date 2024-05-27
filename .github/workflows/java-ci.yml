@@ -32,6 +32,7 @@ jobs:
         for repo in "${REPOSITORIES[@]}"; do
           echo "Building $repo..."
           pushd app-source-code/$repo
+          chmod +x gradlew
           ./gradlew build
           popd
         done
