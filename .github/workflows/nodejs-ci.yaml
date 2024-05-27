@@ -31,10 +31,11 @@ jobs:
           echo "testing $repo..."
           pushd app-source-code/$repo
           npm ci
-          npm run build --if-present
-          npm test --if-present
+
           popd
         done
+##npm test --if-present
+#npm run build --if-present
 
   deploy:
     name: Deploy

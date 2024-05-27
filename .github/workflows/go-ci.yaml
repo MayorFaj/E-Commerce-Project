@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repo: [shippingservice, productcatalogservice, frontendservice, checkoutservice]
+        repo: [shippingservice, productcatalogservice, frontend, checkoutservice]
     permissions:
       contents: read
     needs: build
