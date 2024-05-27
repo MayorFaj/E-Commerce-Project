@@ -84,9 +84,10 @@ jobs:
         IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORY"
         for repo in "${REPOSITORIES[@]}"; do
           echo "Building Docker Image for $repo"
-           pushd app-source-code/$repop
+          pushd app-source-code/$repop
           docker build -t $ECR_REGISTRY/$repo:$COMMIT_SHA .
           docker build -t $ECR_REGISTRY/$repo:stg .
+          popd
         done
     - 
       name: Run Trivy vulnerability scanner
@@ -104,16 +105,16 @@ jobs:
       name: Push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      # run: |
-      #   echo "Pushing Docker Image"
-      #   docker push $ECR_REGISTRY/${{ matrix.repo }}:$COMMIT_SHA .
-      #   docker push $ECR_REGISTRY/${{ matrix.repo }}:stg .
-
       run: |
-        echo "Pushing Docker Image for repositories: $ECR_REPOSITORY"
-        IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORY"
-        for repo in "${REPOSITORIES[@]}"; do
-          echo "Pushing Docker Image for $repo"
-          docker push $ECR_REGISTRY/$repo:$COMMIT_SHA
-          docker push $ECR_REGISTRY/$repo:stg
-        done
+        echo "Pushing Docker Image"
+        docker push $ECR_REGISTRY/${{ matrix.repo }}:$COMMIT_SHA .
+        docker push $ECR_REGISTRY/${{ matrix.repo }}:stg .
+
+      # run: |
+      #   echo "Pushing Docker Image for repositories: $ECR_REPOSITORY"
+      #   IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORY"
+      #   for repo in "${REPOSITORIES[@]}"; do
+      #     echo "Pushing Docker Image for $repo"
+      #     docker push $ECR_REGISTRY/$repo:$COMMIT_SHA
+      #     docker push $ECR_REGISTRY/$repo:stg
+      #   done
