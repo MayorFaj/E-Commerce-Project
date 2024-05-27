@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repo: [recommendation-service, emailservice, loadgenerator]
+        repo: [recommendationservice, emailservice, loadgenerator]
     permissions:
       contents: read
     #needs: build
