@@ -1,7 +1,7 @@
 name: GO Application
 env:
   AWS_REGION: eu-central-1               
-  ECR_REPOSITORY: shippingservice,productcatalogservice,frontendservice,checkoutservice
+  ECR_REPOSITORY: shippingservice,productcatalogservice,frontend,checkoutservice
 on:
   push:
     branches: [ "main" ]
