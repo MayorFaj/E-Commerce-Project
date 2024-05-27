@@ -13,14 +13,14 @@ resource "kubernetes_namespace" "karpenter" {
 # ServiceAccount to assume the role. This will actually create the role
 # for us too.
 module "iam_assumable_role_karpenter" {
-  source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "5.37.2"
-  create_role                   = true
-  role_name                     = "KarpenterNodeRole-${local.name}-cluster"
-  provider_url                  = module.eks.cluster_oidc_issuer_url
+  source                         = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version                        = "5.37.2"
+  create_role                    = true
+  role_name                      = "KarpenterNodeRole-${local.name}-cluster"
+  provider_url                   = module.eks.cluster_oidc_issuer_url
   oidc_fully_qualified_audiences = ["sts.amazonaws.com"]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:kubernetes_namespace.karpenter.id:karpenter"]
-  allow_self_assume_role        = true
+  oidc_fully_qualified_subjects  = ["system:serviceaccount:kubernetes_namespace.karpenter.id:karpenter"]
+  allow_self_assume_role         = true
 
   depends_on = [
     module.eks,
@@ -31,9 +31,9 @@ module "iam_assumable_role_karpenter" {
 }
 
 resource "aws_iam_role_policy" "karpenter_contoller" {
-  name = "KarpenterControllerPolicy"
-  role = module.iam_assumable_role_karpenter.iam_role_name
-  policy      = file("policies/KarpenterControllerPolicy.json")
+  name   = "KarpenterControllerPolicy"
+  role   = module.iam_assumable_role_karpenter.iam_role_name
+  policy = file("policies/KarpenterControllerPolicy.json")
 }
 
 ###-------------------------------########################
@@ -74,7 +74,7 @@ resource "aws_iam_role_policy_attachment" "ecr_readonly_policy" {
 }
 
 resource "helm_release" "karpenter" {
-  namespace = "${kubernetes_namespace.karpenter.id}"
+  namespace = kubernetes_namespace.karpenter.id
 
   name       = "karpenter"
   repository = "oci://public.ecr.aws/karpenter"

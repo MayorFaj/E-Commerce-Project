@@ -3,6 +3,8 @@ kind: Application
 metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
   name: cluster-issuer
   namespace: argocd
 spec:
@@ -13,7 +15,7 @@ spec:
     #plugin:
     #  name: kustomized-helm
     path: cluster-issuer
-    repoURL: ""
+    repoURL: https://github.com/MayorFaj/E-Commerce-Project/gitops-proj
     targetRevision: main
   syncPolicy:
     automated:

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  name: grafana
+  namespace: argocd
+spec:
+  destination:
+    server: https://D7A30105F6FE978E1C4343BC415F35AA.gr7.eu-central-1.eks.amazonaws.com
+    namespace: monitoring
+  project: default
+  source:
+    plugin:
+      name: kustomized-helm
+    path: grafana/overlays/dev
+    repoURL: https://github.com/MayorFaj/E-Commerce-Project/gitops-proj
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=true
+      - ServerSideApply=true

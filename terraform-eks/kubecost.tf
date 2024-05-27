@@ -8,7 +8,7 @@ resource "kubernetes_namespace" "kubecost" {
 }
 
 resource "helm_release" "kubecost" {
-  namespace = "${kubernetes_namespace.kubecost.id}"
+  namespace = kubernetes_namespace.kubecost.id
 
   name       = "kubecost"
   repository = "oci://public.ecr.aws/kubecost"
@@ -19,7 +19,7 @@ resource "helm_release" "kubecost" {
     "${file("kubecost-values-file/values.yaml")}"
   ]
 
- 
+
   depends_on = [
     module.eks,
     kubernetes_namespace.kubecost

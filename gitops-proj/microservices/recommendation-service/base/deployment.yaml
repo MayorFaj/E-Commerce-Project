@@ -27,7 +27,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/recommendationservice:v0.9.0
+        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/recommendation-service:stg
         ports:
         - containerPort: 8080
         readinessProbe:

@@ -74,7 +74,7 @@ jobs:
         IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORY"
         for repo in "${REPOSITORIES[@]}"; do
           echo "Building Docker Image for $repo"
-          pushd app-source-code/$repo/src
+          pushd app-source-code/$repo/src/
           docker build -t $ECR_REGISTRY/$repo:$COMMIT_SHA .
           docker build -t $ECR_REGISTRY/$repo:stg .
           popd

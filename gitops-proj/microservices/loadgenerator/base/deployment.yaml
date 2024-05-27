@@ -54,7 +54,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: 
+        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/loadgenerator-service:stg
         env:
         - name: FRONTEND_ADDR
           value: "frontend:80"
