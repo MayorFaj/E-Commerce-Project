@@ -84,8 +84,8 @@ jobs:
         COMMIT_SHA: ${{ github.sha }}
       run: |
         echo "Pushing Docker Image"
-        docker push $ECR_REGISTRY/${{ matrix.repo }}:$COMMIT_SHA .
-        docker push $ECR_REGISTRY/${{ matrix.repo }}:stg .
+        docker push $ECR_REGISTRY/${{ matrix.repo }}:$COMMIT_SHA
+        docker push $ECR_REGISTRY/${{ matrix.repo }}:stg
 
       # run: |
       #   echo "Pushing Docker Image for repositories: $ECR_REPOSITORY"
