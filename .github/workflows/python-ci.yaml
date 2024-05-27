@@ -4,7 +4,7 @@ name: Python application
 env:
   AWS_REGION: eu-central-1
   COMMIT_SHA: ${{ github.sha }}           
-  ECR_REPOSITORY: recommendation-service,emailservice,loadgenerator
+  ECR_REPOSITORY: recommendationservice,emailservice,loadgenerator
 on:
   push:
     branches: [ "main" ]
@@ -80,8 +80,8 @@ jobs:
       #     popd
 
       run: |
-        echo "Building Docker Image fro repositories: $ECR_REPOSITORIES"
-        IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORIES"
+        echo "Building Docker Image fOR repositories: $ECR_REPOSITORY"
+        IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORY"
         for repo in "${REPOSITORIES[@]}"; do
           echo "Building Docker Image for $repo"
            pushd app-source-code/$repop
@@ -110,8 +110,8 @@ jobs:
       #   docker push $ECR_REGISTRY/${{ matrix.repo }}:stg .
 
       run: |
-        echo "Pushing Docker Image for repositories: $ECR_REPOSITORIES"
-        IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORIES"
+        echo "Pushing Docker Image for repositories: $ECR_REPOSITORY"
+        IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORY"
         for repo in "${REPOSITORIES[@]}"; do
           echo "Pushing Docker Image for $repo"
           docker push $ECR_REGISTRY/$repo:$COMMIT_SHA
