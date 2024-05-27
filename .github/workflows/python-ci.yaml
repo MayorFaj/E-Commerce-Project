@@ -73,9 +73,11 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        echo "Building Docker Image"
-        docker build -t $ECR_REGISTRY/${{ matrix.repo }}:$COMMIT_SHA .
-        docker build -t $ECR_REGISTRY/${{ matrix.repo }}:stg .
+          pushd app-source-code/${{ matrix.repo }}
+          echo "Building Docker Image"
+          docker build -t $ECR_REGISTRY/${{ matrix.repo }}:$COMMIT_SHA .
+          docker build -t $ECR_REGISTRY/${{ matrix.repo }}:stg .
+          popd
 
       # run: |
       #   echo "Building Docker Image fro repositories: $ECR_REPOSITORIES"
@@ -105,7 +107,7 @@ jobs:
         echo "Building Docker Image"
         docker push $ECR_REGISTRY/${{ matrix.repo }}:$COMMIT_SHA .
         docker push $ECR_REGISTRY/${{ matrix.repo }}:stg .
-        
+
       # run: |
       #   echo "Pushing Docker Image for repositories: $ECR_REPOSITORIES"
       #   IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORIES"
