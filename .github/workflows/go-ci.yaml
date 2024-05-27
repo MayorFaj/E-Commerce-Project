@@ -40,7 +40,7 @@ jobs:
       run: |
         for SERVICE in "shippingservice" "productcatalogservice" "frontend" "checkoutservice"; do
           echo "testing $SERVICE..."
-          pushd ../app-source-code/$SERVICE
+          pushd ../$SERVICE
           go build ./...
           go test -v ./...
         done
