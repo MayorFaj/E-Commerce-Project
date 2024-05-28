@@ -5,10 +5,10 @@ env:
 on:
   push:
     branches: [ "main" ]
-    # paths:
-    #   - 'app-source-code/adservice/'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'app-source-code/adservice/'
   workflow_dispatch:
 
 jobs:
