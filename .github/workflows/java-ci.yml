@@ -5,6 +5,8 @@ env:
 on:
   push:
     branches: [ "main" ]
+    # paths:
+    #   - 'app-source-code/adservice/'
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
@@ -27,13 +29,13 @@ jobs:
     - 
       name: Build with Gradle Wrapper
       run: |
-        echo "Running Build"
+        echo "Running Unit Test"
         IFS="," read -r -a REPOSITORIES  <<< "$ECR_REPOSITORY"
         for repo in "${REPOSITORIES[@]}"; do
-          echo "Building $repo..."
+          echo "testing $repo..."
           pushd app-source-code/$repo
           chmod +x ./gradlew
-          ./gradlew build --debug
+          ./gradlew test --warning-mode all
           popd
         done
 

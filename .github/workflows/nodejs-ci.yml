@@ -5,6 +5,9 @@ env:
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'app-source-code/currencyservice/'
+      - 'app-source-code/paymentservice/'
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
