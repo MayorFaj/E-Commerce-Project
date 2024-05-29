@@ -15,7 +15,7 @@ locals {
     {
       rolearn  = module.eks_admins_iam_role.iam_role_arn
       username = module.eks_admins_iam_role.iam_role_name
-      groups   = ["system:masters"] 
+      groups   = ["system:masters"]
     },
     # {
     #   rolearn  = module.iam_assumable_role_karpenter.iam_role_arn

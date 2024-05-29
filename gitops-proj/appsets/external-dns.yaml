@@ -3,6 +3,8 @@ kind: Application
 metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+  argocd.argoproj.io/sync-wave: "1"
   name: external-dns
   namespace: argocd
 spec:
@@ -14,7 +16,7 @@ spec:
     plugin:
       name: kustomized-helm
     path: external-dns/overlays/dev
-    repoURL: ""
+    repoURL: https://github.com/MayorFaj/E-Commerce-Project/gitops-proj
     targetRevision: main
   syncPolicy:
     automated:

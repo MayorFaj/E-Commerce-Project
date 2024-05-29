@@ -1,6 +1,6 @@
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "~>19.0"
+  source          = "terraform-aws-modules/eks/aws"
+  version         = "~>19.0"
   cluster_name    = "${local.name}-cluster"
   cluster_version = local.cluster_version
 
@@ -16,6 +16,7 @@ module "eks" {
     resources        = ["secrets"]
     provider_key_arn = module.ebs_kms_key.key_arn
   }
+
 
   manage_aws_auth_configmap = true
 
@@ -119,7 +120,7 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
-    
+
     general = {
       desired_size         = 2
       min_size             = 1
@@ -134,7 +135,7 @@ module "eks" {
       }
 
       labels = {
-        role      = "spot"
+        role       = "spot"
         GithubRepo = "terraform-aws-eks"
         GithubOrg  = "terraform-aws-modules"
       }
@@ -189,8 +190,8 @@ module "eks" {
 
   }
   node_security_group_tags = {
-    "kubernetes.io/cluster/${local.name}-cluster"  = null
-    "karpenter.sh/discovery" = "${local.name}-cluster"
+    "kubernetes.io/cluster/${local.name}-cluster" = null
+    "karpenter.sh/discovery"                      = "${local.name}-cluster"
   }
 
   tags = local.tags

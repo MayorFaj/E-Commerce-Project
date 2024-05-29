@@ -6,7 +6,7 @@ metadata:
   name: ad-service
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: devadsvc=public.ecr.aws/g0k9k2a6/ad_service:dev
+    argocd-image-updater.argoproj.io/image-list: devadsvc=953523290929.dkr.ecr.eu-central-1.amazonaws.com/ad-service:dev
     argocd-image-updater.argoproj.io/devadminapp.update-strategy: digest
     argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-cred
     argocd-image-updater.argoproj.io/write-back-target: "kustomization:/microservices/ad-service/overlays/dev"
