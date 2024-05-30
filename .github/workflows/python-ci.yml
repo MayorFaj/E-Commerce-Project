@@ -14,8 +14,7 @@ on:
       - 'app-source-code/recommendationservice/'
       - 'app-source-code/emailservice/'
       - 'app-source-code/loadgenerator/'
-permissions:
-  contents: read
+  workflow_dispatch:
 
 jobs:
   deploy:

@@ -2,7 +2,8 @@ name: Terraform Deployment
 
 env:
   TF_VERSION:  '1.4.0'
-  AWS_REGION: eu-central-1 
+  AWS_REGION: eu-central-1
+  ENVIRONMENT: staging ##'Environment for deployment'
 
 on:
   push:
@@ -14,11 +15,6 @@ on:
     paths:
       - 'terraform-eks/**'
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment for deployment'
-        required: true
-        default: 'staging'
 
 jobs:
   validate:
@@ -46,7 +42,7 @@ jobs:
       - name: Terraform Init
         run: |
           pushd terraform-eks
-          terraform init -backend-config=./environments/staging/backend.txt
+          terraform init -backend-config=./environments/${{ env.ENVIRONMENT }}/backend.txt
 
       - name: Terraform  Validate
         run: |
@@ -78,11 +74,11 @@ jobs:
       - name: Terraform Init
         run: |
           pushd terraform-eks
-          terraform init -backend-config=./environments/${{ github.event.inputs.environment }}/backend.txt
+          terraform init -backend-config=./environments/${{ env.ENVIRONMENT }}/backend.txt
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -var-file=./environments/${{ github.event.inputs.environment }}/values.tfvars -out=tfplan
+        run: terraform plan -var-file=./environments/${{ env.ENVIRONMENT }}/values.tfvars -out=tfplan
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
