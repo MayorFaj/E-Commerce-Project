@@ -20,7 +20,7 @@ on:
       environment:
         description: 'Environment for deployment'
         required: true
-        default: 'dev'
+        default: 'staging'
         # Add other environment options as desired
 
 

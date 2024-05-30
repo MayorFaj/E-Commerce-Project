@@ -4,6 +4,8 @@ env:
   TF_VERSION:  '1.4.0'
   AWS_REGION: eu-central-1
   ENVIRONMENT: staging ##'Environment for deployment'
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
 
 on:
   push:
@@ -63,7 +65,9 @@ jobs:
         id: configure-aws-credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::953523290929:role/github-actions-role
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          #role-to-assume: arn:aws:iam::953523290929:role/github-actions-role
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Setup Terraform
@@ -72,11 +76,10 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
 
       - name: Terraform Init
-        ###-backend-config=./environments/${{ env.ENVIRONMENT }}/backend.txt -reconfigure
         run: |
           pushd terraform-eks
           terraform fmt
-          terraform init          
+          terraform init -backend-config=./environments/${{ env.ENVIRONMENT }}/backend.txt -reconfigure
           popd
 
       - name: Terraform  Validate
@@ -86,16 +89,11 @@ jobs:
           terraform validate
           popd
 
-      - name: Terraform Validate Status
-        if: steps.validate.outcome == 'failure'
-        run: exit 1
-
       - name: Terraform Plan
-        ###-var-file=./environments/${{ env.ENVIRONMENT }}/values.tfvars
         id: plan
         run: |
           pushd terraform-eks
-          terraform plan
+          terraform plan -var-file=./environments/${{ env.ENVIRONMENT }}/values.tfvars
           popd
 
       - name: Terraform Plan Status
