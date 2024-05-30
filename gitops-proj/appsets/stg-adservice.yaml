@@ -13,14 +13,14 @@ metadata:
     argocd-image-updater.argoproj.io/stgad.force-update: "true"
 spec:
   destination:
-    server: https://D7A30105F6FE978E1C4343BC415F35AA.gr7.eu-central-1.eks.amazonaws.com
+    server: https://5F424147AF13362ABEE30227DB514E70.gr7.eu-central-1.eks.amazonaws.com
     namespace: webservice
   project: default
   source:
     plugin:
       name: kustomized-helm
     path: microservices/ad-service/overlays/stg
-    repoURL: "https://github.com/MayorFaj/E-Commerce-Project/gitops-proj"
+    repoURL: "https://github.com/MayorFaj/E-Commerce-Project/gitops-proj.git"
     targetRevision: main
   syncPolicy:
     automated:

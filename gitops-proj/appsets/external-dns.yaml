@@ -9,7 +9,7 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    server: https://D7A30105F6FE978E1C4343BC415F35AA.gr7.eu-central-1.eks.amazonaws.com
+    server: https://5F424147AF13362ABEE30227DB514E70.gr7.eu-central-1.eks.amazonaws.com
     namespace: external-dns
   project: default
   source:

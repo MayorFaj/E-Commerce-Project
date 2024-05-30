@@ -2,17 +2,17 @@ terraform fmt
 
 terraform validate
 
-terraform init -backend-config=./environments/dev/backend.txt
+terraform init -backend-config=./environments/dev/backend.txt -reconfigure
 
 terraform plan 
 
-terraform apply -var-file=./environments/dev/values.tfvars 
+terraform apply -var-file=./environments/stg/values.tfvars 
 
-terraform destroy -var-file=./environments/dev/values.tfvars
+terraform destroy -var-file=./environments/stg/values.tfvars
 
 ## Change to other environment
 
-terraform init tfplan -backend-config=./environments/pro/backend.txt -reconfigure
+terraform init tfplan -backend-config=./environments/prod/backend.txt -reconfigure
 
 
 

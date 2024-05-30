@@ -138,6 +138,7 @@ module "eks" {
         role       = "spot"
         GithubRepo = "terraform-aws-eks"
         GithubOrg  = "terraform-aws-modules"
+        Environment = "staging"
       }
 
       instance_types = ["t3.medium", "t2.medium"]

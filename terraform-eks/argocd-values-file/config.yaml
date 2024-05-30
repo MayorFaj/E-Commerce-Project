@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: argocd
     app.kubernetes.io/part-of: argocd
-  name: argocd-git-creds
+  name: argocd-git-cred
   namespace: argocd
 type: Opaque
 data:
@@ -17,12 +17,15 @@ kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/component: controller
-    app.kubernetes.io/name: argocd-image-updater
-    app.kubernetes.io/part-of: argocd-image-updater
-  name: argocd
+    app.kubernetes.io/name: argocd
+    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/managed-by: Helm
+  name: argocd-application-controller
   namespace: argocd
-annotations:
-    eks.amazonaws.com/role-arn: 
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::953523290929:role/github-actions-role
+    meta.helm.sh/release-name: argo-cd
+    meta.helm.sh/release-namespace: argocd
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
