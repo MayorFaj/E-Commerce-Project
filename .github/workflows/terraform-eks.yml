@@ -36,7 +36,7 @@ jobs:
       - name: Terraform Init
         run: |
           pushd terraform-eks
-          terraform init -backend-config=./environments/${{ github.event.inputs.environment }}/backend.txt
+          terraform init
 
       - name: Terraform  Validate
         run: |
