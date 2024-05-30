@@ -72,10 +72,11 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
 
       - name: Terraform Init
+        ###-backend-config=./environments/${{ env.ENVIRONMENT }}/backend.txt -reconfigure
         run: |
           pushd terraform-eks
           terraform fmt
-          terraform init -backend-config=./environments/${{ env.ENVIRONMENT }}/backend.txt -reconfigure
+          terraform init          
           popd
 
       - name: Terraform  Validate
@@ -90,10 +91,11 @@ jobs:
         run: exit 1
 
       - name: Terraform Plan
+        ###-var-file=./environments/${{ env.ENVIRONMENT }}/values.tfvars
         id: plan
         run: |
           pushd terraform-eks
-          terraform plan -var-file=./environments/${{ env.ENVIRONMENT }}/values.tfvars
+          terraform plan
           popd
 
       - name: Terraform Plan Status
