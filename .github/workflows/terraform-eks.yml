@@ -80,7 +80,7 @@ jobs:
         id: plan
         run: |
           pushd terraform-eks
-          terraform plan -var-file=./environments/${{ env.ENVIRONMENT }}/values.tfvars -out=tfplan
+          terraform plan -var-file=./environments/${{ env.ENVIRONMENT }}/values.tfvars
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
@@ -96,4 +96,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' && github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
-        run: terraform apply tfplan
+        run: terraform apply
