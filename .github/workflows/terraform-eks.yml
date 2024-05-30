@@ -78,11 +78,13 @@ jobs:
       - name: Terraform  Validate
         id: validate
         run: |
+          pushd terraform-eks
           terraform validate
 
       - name: Terraform Plan
         id: plan
         run: |
+          pushd terraform-eks
           terraform plan -var-file=./environments/${{ env.ENVIRONMENT }}/values.tfvars -out=tfplan
 
       - name: Terraform Plan Status
