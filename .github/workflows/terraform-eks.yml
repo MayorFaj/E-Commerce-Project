@@ -74,21 +74,23 @@ jobs:
       - name: Terraform Init
         run: |
           pushd terraform-eks
+          pwd
           terraform init -backend-config=./environments/${{ env.ENVIRONMENT }}/backend.txt
 
       - name: Terraform  Validate
         id: validate
         run: |
+          pwd
           terraform validate
 
-      - name: Terraform Plan Status
+      - name: Terraform Validate Status
         if: steps.validate.outcome == 'failure'
         run: exit 1
 
       - name: Terraform Plan
         id: plan
         run: |
-          # pushd terraform-eks
+          pwd
           terraform plan -var-file=./environments/${{ env.ENVIRONMENT }}/values.tfvars
 
       - name: Terraform Plan Status
