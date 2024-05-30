@@ -74,7 +74,8 @@ jobs:
       - name: Terraform Init
         run: |
           pushd terraform-eks
-          terraform init -backend-config=./environments/${{ env.ENVIRONMENT }}/backend.txt
+          terraform fmt
+          terraform init -backend-config=./environments/${{ env.ENVIRONMENT }}/backend.txt -reconfigure
           popd
 
       - name: Terraform  Validate
