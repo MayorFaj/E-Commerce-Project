@@ -33,10 +33,17 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
+      - name: Configure AWS credentials from OIDC
+        id: configure-aws-credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::953523290929:role/github-actions-role
+          aws-region: ${{ env.AWS_REGION }}
+
       - name: Terraform Init
         run: |
           pushd terraform-eks
-          terraform init
+          terraform init -backend-config=./environments/${{ github.event.inputs.environment }}/backend.txt
 
       - name: Terraform  Validate
         run: |
