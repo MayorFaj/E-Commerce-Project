@@ -1,5 +1,5 @@
 tags = {
-  Environment = "dev"
+  Environment = "stg"
   kubernetes.io/os                              =  "linux"
   "kubernetes.io/cluster/${local.name}-cluster" = "shared"
   GithubRepo  = "terraform-aws-eks" 

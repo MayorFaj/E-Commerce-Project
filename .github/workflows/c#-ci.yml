@@ -5,12 +5,10 @@ env:
 on:
   push:
     branches: [ "main" ]
-    # paths:
-    #   - 'app-source-code/cartservice/'
   pull_request:
     branches: [ "main" ]
-    # paths:
-    #   - 'app-source-code/cartservice/'
+    paths:
+      - 'app-source-code/cartservice/'
   workflow_dispatch:
 
 jobs:
@@ -59,8 +57,6 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v1
       with:
         role-to-assume: arn:aws:iam::953523290929:role/github-actions-role
-        # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
     - 
       name: Login to Amazon ECR
