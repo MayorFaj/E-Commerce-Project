@@ -27,7 +27,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/recommendation-service:stg
+        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/recommendationservice:stg
         ports:
         - containerPort: 8080
         readinessProbe:

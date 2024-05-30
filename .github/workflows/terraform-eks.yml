@@ -8,19 +8,17 @@ env:
 
 on:
   push:
-    paths:
-      - 'terraform/**'
     branches:
       - main
   pull_request:
-    paths:
-      - 'terraform/**'
+    # paths:
+    #   - 'terraform/**'
   workflow_dispatch:
     inputs:
       environment:
         description: 'Environment for deployment'
         required: true
-        default: 'dev'
+        default: 'stg'
         # Add other environment options as desired
 
 

@@ -28,7 +28,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/email-service:stg
+        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/emailservice:stg
         ports:
         - containerPort: 8080
         env:

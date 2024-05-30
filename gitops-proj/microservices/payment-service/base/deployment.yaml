@@ -28,7 +28,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/payment-service:stg
+        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/paymentservice:stg
         ports:
         - containerPort: 50051
         env:

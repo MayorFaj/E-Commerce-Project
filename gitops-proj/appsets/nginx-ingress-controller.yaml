@@ -3,7 +3,7 @@ kind: Application
 metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  name: nginx-ingress
+  name: ingress-nginx
   namespace: argocd
 spec:
   destination:
@@ -13,7 +13,7 @@ spec:
   source:
     plugin:
       name: kustomized-helm
-    path: nginx-ingress/overlays/dev
+    path: nginx-ingress/overlays/stg
     repoURL: https://github.com/MayorFaj/E-Commerce-Project/gitops-proj
     targetRevision: main
   syncPolicy:

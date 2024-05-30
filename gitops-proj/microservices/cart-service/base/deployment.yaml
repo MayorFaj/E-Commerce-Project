@@ -28,7 +28,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/cart-service
+        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/cartservice:stg
         ports:
         - containerPort: 7070
         env:

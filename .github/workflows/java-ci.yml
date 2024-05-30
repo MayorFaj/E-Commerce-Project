@@ -7,8 +7,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-    paths:
-      - 'app-source-code/adservice/'
+    # paths:
+    #   - 'app-source-code/adservice/'
   workflow_dispatch:
 
 jobs:
@@ -47,6 +47,7 @@ jobs:
       matrix:
         repo: [adservice]
     permissions:
+      id-token: write
       contents: read
     needs: build
     steps:
@@ -57,10 +58,10 @@ jobs:
       name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        #role-to-assume: arn:aws:iam::123456789012:role/my-github-actions-role OR
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        role-to-assume: arn:aws:iam::953523290929:role/github-actions-role
+        # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # aws-region: ${{ env.AWS_REGION }}
     - 
       name: Login to Amazon ECR
       id: login-ecr

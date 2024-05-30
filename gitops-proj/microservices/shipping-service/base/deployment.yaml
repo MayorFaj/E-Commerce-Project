@@ -27,7 +27,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/shipping-service:stg
+        image: 953523290929.dkr.ecr.eu-central-1.amazonaws.com/shippingservice:stg
         ports:
         - containerPort: 50051
         env:

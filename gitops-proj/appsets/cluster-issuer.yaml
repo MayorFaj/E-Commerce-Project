@@ -10,10 +10,11 @@ metadata:
 spec:
   destination:
     server: https://D7A30105F6FE978E1C4343BC415F35AA.gr7.eu-central-1.eks.amazonaws.com
+    namespace: cert-manager
   project: default
   source:
-    #plugin:
-    #  name: kustomized-helm
+    plugin:
+     name: kustomized-helm
     path: cluster-issuer
     repoURL: https://github.com/MayorFaj/E-Commerce-Project/gitops-proj
     targetRevision: main

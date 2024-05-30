@@ -6,11 +6,11 @@ metadata:
   name: admin-frontend-service
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: devadminapp=public.ecr.aws/g0k9k2a6/front-end:dev
-    argocd-image-updater.argoproj.io/devadminapp.update-strategy: digest
+    argocd-image-updater.argoproj.io/image-list: stgfrontend=953523290929.dkr.ecr.eu-central-1.amazonaws.com/frontend:stg
+    argocd-image-updater.argoproj.io/stgfrontend.update-strategy: digest
     argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-cred
-    argocd-image-updater.argoproj.io/write-back-target: "kustomization:/microservices/frontend-service/overlays/dev"
-    argocd-image-updater.argoproj.io/devadminapp.force-update: "true"
+    argocd-image-updater.argoproj.io/write-back-target: "kustomization:/microservices/frontend-service/overlays/stg"
+    argocd-image-updater.argoproj.io/stgfrontend.force-update: "true"
 spec:
   destination:
     server: https://8163BB1F9F0C9E9CA97578A675922B13.yl4.eu-west-2.eks.amazonaws.com
@@ -19,8 +19,8 @@ spec:
   source:
     plugin:
       name: kustomized-helm
-    path: microservices/admin-frontend-service/overlays/dev
-    repoURL: "https://gitlab.com/dareyio-live/devops/gitops.git"
+    path: microservices/frontend-service/overlays/stg
+    repoURL: "https://github.com/MayorFaj/E-Commerce-Project/gitops-proj"
     targetRevision: main
   syncPolicy:
     automated:

@@ -3,14 +3,14 @@ kind: Application
 metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  name: cart-service
+  name: product-catalog
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: devcart=public.ecr.aws/g0k9k2a6/cart_service:dev
-    argocd-image-updater.argoproj.io/devadminapp.update-strategy: digest
+    argocd-image-updater.argoproj.io/image-list: stgproduct=953523290929.dkr.ecr.eu-central-1.amazonaws.com/productcatalogervice:stg
+    argocd-image-updater.argoproj.io/stgproduct.update-strategy: digest
     argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-cred
-    argocd-image-updater.argoproj.io/write-back-target: "kustomization:/microservices/cart-service/overlays/dev"
-    argocd-image-updater.argoproj.io/devadminapp.force-update: "true"
+    argocd-image-updater.argoproj.io/write-back-target: "kustomization:/microservices/product-catalog/overlays/stg"
+    argocd-image-updater.argoproj.io/stgproduct.force-update: "true"
 spec:
   destination:
     server: https://D7A30105F6FE978E1C4343BC415F35AA.gr7.eu-central-1.eks.amazonaws.com
@@ -19,8 +19,8 @@ spec:
   source:
     plugin:
       name: kustomized-helm
-    path: microservices/cart-service/overlays/dev
-    repoURL: ""
+    path: microservices/product-catalog/overlays/stg
+    repoURL: "https://github.com/MayorFaj/E-Commerce-Project/gitops-proj"
     targetRevision: main
   syncPolicy:
     automated:
