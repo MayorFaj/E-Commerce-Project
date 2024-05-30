@@ -34,7 +34,7 @@ locals {
   ebs_csi_service_account_name      = "ebs-csi-controller-sa"
 
   tags = {
-    Environment                                   = "dev"
+    Environment                                   = "staging"
     "kubernetes.io/cluster/${local.name}-cluster" = "owned"
     GithubRepo                                    = "terraform-aws-eks"
     GithubOrg                                     = "terraform-aws-modules"

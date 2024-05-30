@@ -105,10 +105,10 @@ global:
   # -- Default priority class for all components
   priorityClassName: ""
 
+
   # -- Default node selector for all components
   nodeSelector:
     kubernetes.io/os: linux
-    eks.amazonaws.com/nodegroup: general
 
   # -- Default tolerations for all components
   tolerations: []
@@ -125,10 +125,10 @@ global:
       matchExpressions:
         - key: karpenter.sh/nodepool
           operator: DoesNotExist
-        - key: eks.amazonaws.com/nodegroup
+        - key: Environment
           operator: In
           values:
-          - general
+            - staging
       
         # - key: topology.kubernetes.io/zone
         #   operator: In
@@ -1842,7 +1842,7 @@ server:
   ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/tls/#tls-certificates-used-by-argocd-server
   certificate:
     # -- Deploy a Certificate resource (requires cert-manager)
-    enabled: true
+    enabled: false
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
     secretName: argocd.tooling.mayorfaj.io
     # -- Certificate primary domain (commonName)
@@ -2005,7 +2005,7 @@ server:
       external-dns.alpha.kubernetes.io/hostname: argocd.tooling.mayorfaj.io
       cert-manager.io/cluster-issuer: "letsencrypt-prod"
       kubernetes.io/tls-acme: "true"
-      #nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
       nginx.ingress.kubernetes.io/rewrite-target: /
@@ -2024,7 +2024,7 @@ server:
     pathType: Prefix
     backend:
       service:
-        name: argocd-server
+        name: argo-cd-argocd-server
         port:
           name: https
 

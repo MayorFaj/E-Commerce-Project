@@ -17,7 +17,12 @@ terraform {
       version = ">= 1.7.0"
     }
   }
-  #backend "s3" {}
+  backend "s3" {
+    bucket = "rias-touch-terraform-state-file"
+    key    = "terraform-eks/stg-terraform.tfstate"
+    region = "eu-central-1"
+    encrypt = true
+  }
 }
 
 provider "aws" {

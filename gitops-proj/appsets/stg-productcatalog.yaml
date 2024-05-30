@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  name: product-catalog
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: stgproduct=953523290929.dkr.ecr.eu-central-1.amazonaws.com/productcatalogervice:stg
+    argocd-image-updater.argoproj.io/stgproduct.update-strategy: digest
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-cred
+    argocd-image-updater.argoproj.io/write-back-target: "kustomization:/microservices/product-catalog/overlays/stg"
+    argocd-image-updater.argoproj.io/stgproduct.force-update: "true"
+spec:
+  destination:
+    server: https://5F424147AF13362ABEE30227DB514E70.gr7.eu-central-1.eks.amazonaws.com
+    namespace: webservice
+  project: default
+  source:
+    plugin:
+      name: kustomized-helm
+    path: microservices/product-catalog/overlays/stg
+    repoURL: "https://github.com/MayorFaj/E-Commerce-Project/gitops-proj"
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=true
+      - ServerSideApply=true

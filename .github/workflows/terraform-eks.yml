@@ -1,0 +1,104 @@
+# name: Terraform Deployment
+# env:
+#   TF_VERSION:  '1.4.0'
+#   AWS_REGION: eu-central-1
+#   ENVIRONMENT: staging ##'Environment for deployment'
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
+#     paths:
+#       - 'terraform-eks/**'
+#   workflow_dispatch:
+
+# jobs:
+#   # validate:
+#   #   name: validate
+#   #   runs-on: ubuntu-latest
+#   #   permissions:
+#   #     id-token: write
+#   #     contents: read
+#   #   steps:
+#   #     - name: Checkout code
+#   #       uses: actions/checkout@v2
+
+#   #     - name: Configure AWS credentials from OIDC
+#   #       id: configure-aws-credentials
+#   #       uses: aws-actions/configure-aws-credentials@v1
+#   #       with:
+#   #         role-to-assume: arn:aws:iam::953523290929:role/github-actions-role
+#   #         aws-region: ${{ env.AWS_REGION }}
+
+#   #     - name: Setup Terraform
+#   #       uses: hashicorp/setup-terraform@v1
+#   #       with:
+#   #         terraform_version: ${{ env.TF_VERSION }}
+
+#   #     - name: Terraform Init
+#   #       run: |
+#   #         pushd terraform-eks
+#   #         terraform init -backend-config=./environments/${{ env.ENVIRONMENT }}/backend.txt
+
+#   #     - name: Terraform  Validate
+#   #       run: |
+#   #         terraform validate
+
+#   deploy:
+#     #needs: validate
+#     name: deploy
+#     runs-on: ubuntu-latest
+#     permissions:
+#       id-token: write
+#       contents: read
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+  
+#       - name: Configure AWS credentials from OIDC
+#         id: configure-aws-credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           role-to-assume: arn:aws:iam::953523290929:role/github-actions-role
+#           aws-region: ${{ env.AWS_REGION }}
+
+#       - name: Setup Terraform
+#         uses: hashicorp/setup-terraform@v1
+#         with:
+#           terraform_version: ${{ env.TF_VERSION }}
+
+#       - name: Terraform Init
+#         run: |
+#           pushd terraform-eks
+#           terraform init -backend-config=./environments/${{ env.ENVIRONMENT }}/backend.txt -reconfigure
+
+#       - name: Terraform  Validate
+#         id: validate
+#         run: |
+#           pushd terraform-eks
+#           terraform validate
+
+#       - name: Terraform Plan
+#         id: plan
+#         run: |
+#           pushd terraform-eks
+#           terraform plan -var-file=./environments/${{ env.ENVIRONMENT }}/values.tfvars -out=tfplan
+
+#       - name: Terraform Plan Status
+#         if: steps.plan.outcome == 'failure'
+#         run: exit 1
+
+#       - name: Manual Approval
+#         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+#         uses: trstringer/manual-approval@v1
+#         with:
+#           secret: ${{ github.TOKEN }}
+#           message: "A Terraform deployment is pending for review on the ${GITHUB_REF} branch. Please review the changes and provide approval to proceed."
+#           approvers: 'mayorfaj@gmail.com'
+
+#       - name: Terraform Apply
+#         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' && github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
+#         run: terraform apply tfplan

@@ -14,20 +14,20 @@ on:
       - 'app-source-code/recommendationservice/'
       - 'app-source-code/emailservice/'
       - 'app-source-code/loadgenerator/'
-permissions:
-  contents: read
+  workflow_dispatch:
 
 jobs:
   deploy:
     name: Deploy
     environment: staging
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     strategy:
       matrix:
         repo: [recommendationservice, emailservice, loadgenerator]
     permissions:
+      id-token: write
       contents: read
-    #needs: build
     steps:
     - 
       name: Checkout
@@ -36,9 +36,7 @@ jobs:
       name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        #role-to-assume: arn:aws:iam::123456789012:role/my-github-actions-role OR
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        role-to-assume: arn:aws:iam::953523290929:role/github-actions-role
         aws-region: ${{ env.AWS_REGION }}
     - 
       name: Login to Amazon ECR

@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  name: cart-service
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: stgcart=953523290929.dkr.ecr.eu-central-1.amazonaws.com/cartservice:stg
+    argocd-image-updater.argoproj.io/stgcart.update-strategy: digest
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-cred
+    argocd-image-updater.argoproj.io/write-back-target: "kustomization:/microservices/cart-service/overlays/stg"
+    argocd-image-updater.argoproj.io/stgcart.force-update: "true"
+spec:
+  destination:
+    server: https://5F424147AF13362ABEE30227DB514E70.gr7.eu-central-1.eks.amazonaws.com
+    namespace: webservice
+  project: default
+  source:
+    plugin:
+      name: kustomized-helm
+    path: microservices/cart-service/overlays/stg
+    repoURL: "https://github.com/MayorFaj/E-Commerce-Project/gitops-proj"
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=true
+      - ServerSideApply=true
