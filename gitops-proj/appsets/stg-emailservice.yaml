@@ -13,7 +13,7 @@ metadata:
     argocd-image-updater.argoproj.io/stgemail.force-update: "true"
 spec:
   destination:
-    server: https://5F424147AF13362ABEE30227DB514E70.gr7.eu-central-1.eks.amazonaws.com
+    server: https://79BE80095DCC140D10B0E86358C06E6A.gr7.eu-central-1.eks.amazonaws.com
     namespace: webservice
   project: default
   source:
