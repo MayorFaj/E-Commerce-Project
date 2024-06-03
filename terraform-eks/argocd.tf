@@ -37,6 +37,7 @@ resource "helm_release" "argocd" {
   depends_on = [
     module.eks,
     kubernetes_namespace.argocd,
-    kubectl_manifest.argocd_manifests
+    kubectl_manifest.argocd_manifests,
+    aws_iam_role.argocd_role
   ]
 }
