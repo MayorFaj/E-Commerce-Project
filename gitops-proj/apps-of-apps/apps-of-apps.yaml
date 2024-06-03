@@ -11,6 +11,8 @@ spec:
     namespace: argocd
   project: default
   source:
+    kustomize:
+      buildOptions: --enable-helm
     # plugin:
     #   name: kustomized-helm
     path: gitops-proj/appsets
