@@ -759,9 +759,16 @@ controller:
     # -- Service account name
     name: argocd-application-controller
     # -- Annotations applied to created service account
-    annotations: {}
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::953523290929:role/argocd-role
+      meta.helm.sh/release-name: argo-cd
+      meta.helm.sh/release-namespace: argocd
     # -- Labels applied to created service account
-    labels: {}
+    labels:
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/name: argocd-application-controller
+      app.kubernetes.io/part-of: argocd
+      app.kubernetes.io/managed-by: Helm
     # -- Automount API credentials for the Service Account
     automountServiceAccountToken: true
 
@@ -1984,9 +1991,16 @@ server:
     # -- Server service account name
     name: argocd-server
     # -- Annotations applied to created service account
-    annotations: {}
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::953523290929:role/argocd-role
+      meta.helm.sh/release-name: argo-cd
+      meta.helm.sh/release-namespace: argocd
     # -- Labels applied to created service account
-    labels: {}
+    labels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: argocd-server
+      app.kubernetes.io/part-of: argocd
+      app.kubernetes.io/managed-by: Helm
     # -- Automount API credentials for the Service Account
     automountServiceAccountToken: true
 #ADDEDD CONF
@@ -2705,10 +2719,16 @@ applicationSet:
     create: true
     # -- ApplicationSet controller service account name
     name: argocd-applicationset-controller
-    # -- Annotations applied to created service account
-    annotations: {}
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::953523290929:role/argocd-role
+      meta.helm.sh/release-name: argo-cd
+      meta.helm.sh/release-namespace: argocd
     # -- Labels applied to created service account
-    labels: {}
+    labels:
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/name: argocd-applicationset-controller
+      app.kubernetes.io/part-of: argocd
+      app.kubernetes.io/managed-by: Helm
     # -- Automount API credentials for the Service Account
     automountServiceAccountToken: true
 

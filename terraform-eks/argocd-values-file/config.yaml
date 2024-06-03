@@ -11,52 +11,52 @@ type: Opaque
 data:
   username: TWF5b3JGYWo=
   password: Z2hwXzBybjV0TTVGVXFUWmJBY2xQNmpVYW94anFjQ1ZWMzFSS3hvcA==
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: argocd
-    app.kubernetes.io/part-of: argocd
-    app.kubernetes.io/managed-by: Helm
-  name: argocd-application-controller
-  namespace: argocd
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::953523290929:role/github-actions-role
-    meta.helm.sh/release-name: argo-cd
-    meta.helm.sh/release-namespace: argocd
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: argocd
-    app.kubernetes.io/part-of: argocd
-  name: argocd
-  namespace: argocd
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - ""
-  verbs:
-  - ""
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: argocd
-    app.kubernetes.io/part-of: argocd
-  name: argocd
-  namespace: argocd
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: argocd
-subjects:
-- kind: ServiceAccount
-  name: argocd
+#---
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   labels:
+#     app.kubernetes.io/component: controller
+#     app.kubernetes.io/name: argocd
+#     app.kubernetes.io/part-of: argocd
+#     app.kubernetes.io/managed-by: Helm
+#   name: argocd-application-controller
+#   namespace: argocd
+#   annotations:
+#     eks.amazonaws.com/role-arn: arn:aws:iam::953523290929:role/argocd-role
+#     meta.helm.sh/release-name: argo-cd
+#     meta.helm.sh/release-namespace: argocd
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: Role
+# metadata:
+#   labels:
+#     app.kubernetes.io/component: controller
+#     app.kubernetes.io/name: argocd
+#     app.kubernetes.io/part-of: argocd
+#   name: argocd
+#   namespace: argocd
+# rules:
+# - apiGroups:
+#   - ""
+#   resources:
+#   - ""
+#   verbs:
+#   - ""
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: RoleBinding
+# metadata:
+#   labels:
+#     app.kubernetes.io/component: controller
+#     app.kubernetes.io/name: argocd
+#     app.kubernetes.io/part-of: argocd
+#   name: argocd
+#   namespace: argocd
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: Role
+#   name: argocd
+# subjects:
+# - kind: ServiceAccount
+#   name: argocd

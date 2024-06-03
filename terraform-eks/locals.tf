@@ -17,6 +17,11 @@ locals {
       username = module.eks_admins_iam_role.iam_role_name
       groups   = ["system:masters"]
     },
+    {
+      rolearn  = aws_iam_role.argocd_role.arn
+      username = aws_iam_role.argocd_role.arn
+      groups   = ["system:masters"]
+    },
     # {
     #   rolearn  = module.iam_assumable_role_karpenter.iam_role_arn
     #   username = "system:node:{{EC2PrivateDNSName}}"
