@@ -13,8 +13,8 @@ spec:
     namespace: argocd
   project: default
   source:
-    # plugin:
-    #   name: kustomized-helm
+    plugin:
+      name: kustomized-helm
     path: gitops-proj/argocd-image-updater/overlays/stg
     repoURL: "https://github.com/MayorFaj/E-Commerce-Project.git"
     targetRevision: main
