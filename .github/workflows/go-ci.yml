@@ -5,6 +5,11 @@ env:
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'app-source-code/shippingservice/'
+      - 'app-source-code/productcatalogservice/'
+      - 'app-source-code/frontend/'
+      - 'app-source-code/checkoutservice/'
   pull_request:
     branches: [ "main" ]
     paths:
