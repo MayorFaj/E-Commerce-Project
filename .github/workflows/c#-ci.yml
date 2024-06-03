@@ -5,6 +5,8 @@ env:
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'app-source-code/cartservice/'
   pull_request:
     branches: [ "main" ]
     paths:
