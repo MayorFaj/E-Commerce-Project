@@ -9,7 +9,7 @@ metadata:
     argocd-image-updater.argoproj.io/image-list: stgpayment=953523290929.dkr.ecr.eu-central-1.amazonaws.com/paymentservice:stg
     argocd-image-updater.argoproj.io/stgpayment.update-strategy: digest
     argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-cred
-    argocd-image-updater.argoproj.io/write-back-target: "kustomization:/microservices/admin-frontend-service/overlays/stg"
+    argocd-image-updater.argoproj.io/write-back-target: "kustomization:/microservices/paymentservice/overlays/stg"
     argocd-image-updater.argoproj.io/stgpayment.force-update: "true"
 spec:
   destination:
