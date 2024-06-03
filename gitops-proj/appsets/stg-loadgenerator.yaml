@@ -17,8 +17,8 @@ spec:
     namespace: webservice
   project: default
   source:
-    plugin:
-      name: kustomized-helm
+    # plugin:
+    #   name: kustomized-helm
     path: gitops-proj/microservices/loadgenerator/overlays/stg
     repoURL: "https://github.com/MayorFaj/E-Commerce-Project.git"
     targetRevision: main
