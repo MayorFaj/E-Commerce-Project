@@ -13,7 +13,7 @@ metadata:
     argocd-image-updater.argoproj.io/stgrecommend.force-update: "true"
 spec:
   destination:
-    server: https://79BE80095DCC140D10B0E86358C06E6A.gr7.eu-central-1.eks.amazonaws.com
+    server: https://kubernetes.default.svc
     namespace: webservice
   project: default
   source:
