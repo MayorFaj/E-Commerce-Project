@@ -11,8 +11,8 @@ spec:
     namespace: ingress-nginx
   project: default
   source:
-    # plugin:
-    #   name: kustomized-helm
+    plugin:
+      name: kustomized-helm
     path: gitops-proj/nginx-ingress-controller/overlays/stg
     repoURL: "https://github.com/MayorFaj/E-Commerce-Project.git"
     targetRevision: main
