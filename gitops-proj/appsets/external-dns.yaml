@@ -15,8 +15,8 @@ spec:
   source:
     plugin:
       name: kustomized-helm
-    path: external-dns/overlays/stg
-    repoURL: https://github.com/MayorFaj/E-Commerce-Project/gitops-proj
+    path: gitops-proj/external-dns/overlays/stg
+    repoURL: "https://github.com/MayorFaj/E-Commerce-Project.git"
     targetRevision: main
   syncPolicy:
     automated:

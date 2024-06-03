@@ -13,8 +13,8 @@ spec:
   source:
     plugin:
       name: kustomized-helm
-    path: nginx-ingress/overlays/stg
-    repoURL: https://github.com/MayorFaj/E-Commerce-Project/gitops-proj
+    path: gitops-proj/nginx-ingress/overlays/stg
+    repoURL: "https://github.com/MayorFaj/E-Commerce-Project.git"
     targetRevision: main
   syncPolicy:
     automated:

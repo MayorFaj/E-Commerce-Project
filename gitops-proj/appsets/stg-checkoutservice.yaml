@@ -19,9 +19,8 @@ spec:
   source:
     plugin:
       name: kustomized-helm
-    path: microservices/checkout-service/overlays/stg
-    repoURL: "https://github.com/MayorFaj/E-Commerce-Project/gitops-proj"
-    targetRevision: main
+    path: gitops-proj/microservices/checkout-service/overlays/stg
+    repoURL: "https://github.com/MayorFaj/E-Commerce-Project.git
   syncPolicy:
     automated:
       prune: true

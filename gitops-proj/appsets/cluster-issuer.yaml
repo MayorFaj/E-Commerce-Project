@@ -15,8 +15,8 @@ spec:
   source:
     plugin:
      name: kustomized-helm
-    path: cluster-issuer
-    repoURL: https://github.com/MayorFaj/E-Commerce-Project/gitops-proj
+    path: gitops-proj/cluster-issuer
+    repoURL: "https://github.com/MayorFaj/E-Commerce-Project.git"
     targetRevision: main
   syncPolicy:
     automated:
