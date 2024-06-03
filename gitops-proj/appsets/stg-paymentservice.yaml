@@ -3,7 +3,7 @@ kind: Application
 metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  name: admin-frontend-service
+  name: payment-service
   namespace: argocd
   annotations:
     argocd-image-updater.argoproj.io/image-list: stgpayment=953523290929.dkr.ecr.eu-central-1.amazonaws.com/paymentservice:stg
