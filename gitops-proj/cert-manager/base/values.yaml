@@ -324,8 +324,8 @@ podLabels: {}
 # This default ensures that Pods are only scheduled to Linux nodes.
 # It prevents Pods being scheduled to Windows nodes in a mixed OS cluster.
 # +docs:property
-nodeSelector:
-  kubernetes.io/os: linux
+nodeSelector: {}
+  #kubernetes.io/os: linux
 
 # +docs:ignore
 ingressShim: {}
@@ -702,8 +702,8 @@ webhook:
   # This default ensures that Pods are only scheduled to Linux nodes.
   # It prevents Pods being scheduled to Windows nodes in a mixed OS cluster.
   # +docs:property
-  nodeSelector:
-    kubernetes.io/os: linux
+  nodeSelector: {}
+    #kubernetes.io/os: linux
 
   # A Kubernetes Affinity, if required; see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#affinity-v1-core
   #
@@ -988,8 +988,8 @@ cainjector:
   # This default ensures that Pods are only scheduled to Linux nodes.
   # It prevents Pods being scheduled to Windows nodes in a mixed OS cluster.
   # +docs:property
-  nodeSelector:
-    kubernetes.io/os: linux
+  nodeSelector: {}
+    #kubernetes.io/os: linux
 
   # A Kubernetes Affinity, if required; see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#affinity-v1-core
   #
@@ -1187,8 +1187,8 @@ startupapicheck:
   # This default ensures that Pods are only scheduled to Linux nodes.
   # It prevents Pods being scheduled to Windows nodes in a mixed OS cluster.
   # +docs:property
-  nodeSelector:
-    kubernetes.io/os: linux
+  nodeSelector: {}
+    #kubernetes.io/os: linux
 
   # A Kubernetes Affinity, if required; see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#affinity-v1-core
   #
