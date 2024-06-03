@@ -13,8 +13,8 @@ spec:
   source:
     plugin:
       name: kustomized-helm
-    path: loki/overlays/stg
-    repoURL: https://github.com/MayorFaj/E-Commerce-Project/gitops-proj
+    path: gitops-proj/loki/overlays/stg
+    repoURL: "https://github.com/MayorFaj/E-Commerce-Project.git"
     targetRevision: main
   syncPolicy:
     automated:

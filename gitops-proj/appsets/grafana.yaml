@@ -13,8 +13,8 @@ spec:
   source:
     plugin:
       name: kustomized-helm
-    path: grafana/overlays/stg
-    repoURL: https://github.com/MayorFaj/E-Commerce-Project/gitops-proj
+    path: gitops-proj/grafana/overlays/stg
+    repoURL: "https://github.com/MayorFaj/E-Commerce-Project.git"
     targetRevision: main
   syncPolicy:
     automated:
