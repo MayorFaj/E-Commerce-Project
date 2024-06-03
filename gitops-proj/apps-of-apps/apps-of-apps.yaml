@@ -4,15 +4,15 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   name: apps-of-apps
-  namespace: argocd
+  #namespace: argocd
 spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
   project: default
   source:
-    plugin:
-      name: kustomized-helm
+    # plugin:
+    #   name: kustomized-helm
     path: gitops-proj/appsets
     repoURL: https://github.com/MayorFaj/E-Commerce-Project
     targetRevision: main
