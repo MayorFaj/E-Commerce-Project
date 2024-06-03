@@ -3,7 +3,7 @@ kind: Application
 metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  name: apps-of-apps
+  name: app-of-apps
   #namespace: argocd
 spec:
   destination:
@@ -14,7 +14,7 @@ spec:
     # plugin:
     #   name: kustomized-helm
     path: gitops-proj/appsets
-    repoURL: https://github.com/MayorFaj/E-Commerce-Project
+    repoURL: 'https://github.com/MayorFaj/E-Commerce-Project.git'
     targetRevision: main
   syncPolicy:
     automated:
