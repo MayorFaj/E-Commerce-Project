@@ -45,20 +45,20 @@ First, you declare users in argocd-cm simply by adding lines such as accounts.fo
 
 On the installation of Argo CD, there is a built in user that has full access to the system.
 It is recommended to use the admin user only for initial configuration and then switch to;
-- Local Users
+- Local Users OR
 - SSO integration
 
 Local users/accounts
-I will walk you through how we can create local users/account gfo rArgoCD in this article;
-1. POssibility to configure an API account with limited access and generate an authentication token.
+I will walk you through how we can create local users/account for ArgoCD in this post;
+1. Possibility to configure an API account with limited access and generate an authentication token.
 2. THe n the token can be used to automatically create applications, projects
 3. Login to argocd UI interface.
 4. The local users don't provide advanced features such as groups, login history
 
+Note: When you create local users, each of those users will need additional RBAC rules set up, otherwise they will fall back to the default policy specified by policy.default field of the argocd-rbac-cm ConfigMap.
 FIrst , let us confirm some details;
 Run;
 `kubectl get cm -n argocd`
-
 
 The `argocd-cm` is holding all of the users which is required to be in the argocd server.
 If you want to add any user, you need to modify the configmap file.
@@ -66,13 +66,14 @@ If you want to add any user, you need to modify the configmap file.
 Lets creack on;
 Run 
 `kubectl get cm -n argocd`
-`kubectl describe cm argocd-cm -n argocd`
+`kubectl get cm argocd-cm -n argocd -oyaml`
+`kubectl edit cm argocd-cm -n argocd`
 
 IN the data section, add an additional local user with apikey and login capabilities
 - apiKey - allows generating authentication tokens for API access
 - login - allows to login using UI
 
-accounts.user1: apiKey login
+`accounts.mayorfaj: apiKey, login`
 
 By default, configured users are enabled, if there is a need to disable
 acount.User1.enabled: "false"
@@ -85,14 +86,26 @@ To get full users list
 `argocd account list `
 Get specific user details
 `argocd account get <username>`
+
 Set user password
-argocd account  --password \ --acount <usenamename> \
---current-password <current-admin> \ --new-password <new-user-password>
+```
+argocd account  --password \
+--acount <username> \
+--current-password <current-admin> \
+--new-password <new-user-password>
+```
+
 Generate Auth token
 `argocd account generate-token -account <username`
  
-User/Group Permission/Authorization
-edit cm name `argocd-rbac-cm`, and modify data section 
+6. User/Group Permission/Authorization
+The RBAC feature enables restriction of access to Argo CD resources.
+RBAC requires SSO configuration or one or more local users setup. Once SSO or local users are configured, additional RBAC roles can be defined, and SSO groups or local users can then be mapped to roles.
+
+- edit cm named `argocd-rbac-cm`, and modify data section 
+`kubectl edit cm argocd-rbac-cm -n argocd`
+
+The role is assigned to any user which belongs to your-github-org:your-team group. All other users get the default policy of role:readonly, which cannot modify Argo CD settings
 
 ```
 policy.default: role:readonly
@@ -109,17 +122,27 @@ Group   SUBJECT                 ROLE
 g,      username/group/role, role:User1
 ```
 
-
-
+```
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: argocd-rbac-cm
+  namespace: argocd
 data:
+  policy.default: role:readonly
   policy.csv: |
-    # Define a foo role and give it permissions
-    p, role:foo, applications, sync, staging-team-foo/*, allow
-    p, role:foo, applications, update, production-team-foo/*, allow
+    p, role:org-admin, applications, *, */*, allow
+    p, role:org-admin, clusters, get, *, allow
+    p, role:org-admin, repositories, get, *, allow
+    p, role:org-admin, repositories, create, *, allow
+    p, role:org-admin, repositories, update, *, allow
+    p, role:org-admin, repositories, delete, *, allow
+    p, role:org-admin, projects, get, *, allow
+    p, role:org-admin, projects, create, *, allow
+    p, role:org-admin, projects, update, *, allow
+    p, role:org-admin, projects, delete, *, allow
+    p, role:org-admin, logs, get, *, allow
+    p, role:org-admin, exec, create, */*, allow
 
-    # Assign foo-user to the roles foo and readonly (pre-existing role)
-    g, foo-user, role:foo
-    g, foo-user, role:readonly
+    g, your-github-org:your-team, role:org-admin
+```

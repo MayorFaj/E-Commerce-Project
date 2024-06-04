@@ -122,8 +122,8 @@ module "eks" {
   eks_managed_node_groups = {
 
     general = {
-      desired_size         = 2
-      min_size             = 1
+      desired_size         = 4
+      min_size             = 2
       max_size             = 5
       force_update_version = true
 
