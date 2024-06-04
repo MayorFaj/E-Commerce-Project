@@ -5,4 +5,3 @@
 [![Python Application](https://github.com/MayorFaj/E-Commerce-Project/actions/workflows/python-ci.yml/badge.svg)](https://github.com/MayorFaj/E-Commerce-Project/actions/workflows/python-ci.yml)
 [![Terraform Deployment](https://github.com/MayorFaj/E-Commerce-Project/actions/workflows/terraform-eks.yml/badge.svg)](https://github.com/MayorFaj/E-Commerce-Project/actions/workflows/terraform-eks.yml)
 
-
