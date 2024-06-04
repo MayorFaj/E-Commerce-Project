@@ -19,7 +19,7 @@ spec:
           service:
             name: frontend
             port:
-              number: https
+              number: 80
   tls:
   - hosts:
     - "riastouch.mayorfaj.io"
