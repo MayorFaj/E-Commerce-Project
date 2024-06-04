@@ -99,6 +99,6 @@ jobs:
       #     #message: "A Terraform deployment is pending for review on the ${GITHUB_REF} branch. Please review the changes and provide approval to proceed."
       #     approvers: 'mayorfaj@gmail.com'
 
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' && github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
-        run: terraform apply tfplan
+      # - name: Terraform Apply
+      #   if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' && github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
+      #   run: terraform apply tfplan
