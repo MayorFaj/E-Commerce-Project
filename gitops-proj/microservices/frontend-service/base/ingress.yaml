@@ -1,10 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: frontend-service
+  name: frontend
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     external-dns.alpha.kubernetes.io/hostname: riastouch.mayorfaj.io
+    #kubernetes.io/tls-acme: "true"
     #nginx.ingress.kubernetes.io/enable-cors: 'true'
 spec:
   ingressClassName: nginx
@@ -18,7 +19,7 @@ spec:
           service:
             name: frontend
             port:
-              number: 80
+              number: 
   tls:
   - hosts:
     - "riastouch.mayorfaj.io"
