@@ -2,7 +2,7 @@ name: Terraform Deployment
 env:
   TF_VERSION:  '1.4.0'
   AWS_REGION: eu-central-1
-  ENVIRONMENT: staging ##'Environment for deployment'
+  ENVIRONMENT: stg ##'Environment for deployment'
 
 on:
   push:
