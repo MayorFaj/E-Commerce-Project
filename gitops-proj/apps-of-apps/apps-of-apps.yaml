@@ -10,6 +10,7 @@ spec:
     namespace: argocd
     server: 'https://kubernetes.default.svc'
   source:
+  
     kustomize:
       buildOptions: --enable-helm
     path: gitops-proj/appsets
