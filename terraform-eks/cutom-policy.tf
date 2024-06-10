@@ -23,14 +23,14 @@ resource "aws_iam_role" "ebs_csi_driver_role" {
 EOF
 }
 
-# Attach the AWS managed policy to the IAM role
+# Attach the AWS managed policy to the  EBS-CSI IAM role
 resource "aws_iam_role_policy_attachment" "ebs_csi_driver_policy_attachment" {
   role       = aws_iam_role.ebs_csi_driver_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
 
 
-# ATTACH-ECR-FULL-ACCESs to eks node
+# ATTACH-ECR-FULL-ACCESS to eks node
 resource "aws_iam_policy" "eks_nodegroup_ecr_full_access" {
   name        = "EKSNodegroupFullECRAccess"
   description = "full ecr access to for nodegroup"
